@@ -40,7 +40,6 @@ public class PlayerMovement : MonoBehaviour
 
         if (isGrounded && Input.GetKeyDown(KeyCode.Space))
         {
-            Debug.Log("Jump");
             velocity.y += jumpHeight;
         }
 

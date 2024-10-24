@@ -5,7 +5,7 @@ using UnityEngine;
 public class lookScript : MonoBehaviour
 {
 
-    public float sensitivity = 50f;
+    public float sensitivity = 150f;
 
     public Transform playerBody;
 

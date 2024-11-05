@@ -5,7 +5,9 @@ public class GunScript : MonoBehaviour
     public float damage = 10f;
     public float range = 100f;
     public Camera fpsCam;
-    public ParticleSystem muzzleFlash;
+    public ParticleSystem muzzleFlash1;
+    public ParticleSystem muzzleFlash2;
+
     public GameObject impactEffect;
 
 
@@ -20,9 +22,13 @@ public class GunScript : MonoBehaviour
     void Shoot()
     {
         Debug.Log("Shoot pressed");
-        if (muzzleFlash != null)
+        if (muzzleFlash1 != null)
         {
-            muzzleFlash.Play();
+            muzzleFlash1.Play();
+        }
+        if (muzzleFlash2 != null)
+        {
+            muzzleFlash2.Play();
         }
 
 

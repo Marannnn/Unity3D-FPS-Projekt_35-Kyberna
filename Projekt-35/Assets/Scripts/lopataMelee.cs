@@ -35,10 +35,7 @@ public class MeleeWeapon : MonoBehaviour
         {
             attackEffect.Play();
         }
-        if (Input.GetButtonDown("Fire1"))
-        {
-            animator.SetTrigger("Attack");
-        }
+       
 
         RaycastHit hit;
         if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, attackRange))

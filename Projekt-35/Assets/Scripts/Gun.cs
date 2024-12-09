@@ -37,7 +37,6 @@ public class GunScript : MonoBehaviour
         {
             Debug.Log(hit.transform.name);
 
-            // Kontrola, zda objekt má komponentu "Enemy"
             Target target = hit.transform.GetComponent<Target>();
             if (target != null)
             {

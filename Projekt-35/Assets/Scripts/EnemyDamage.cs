@@ -93,7 +93,7 @@ public class EnemyDamage : MonoBehaviour
     private void OnDrawGizmos()
     {
 
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, attackRange);
+        //Gizmos.color = Color.red;
+        //Gizmos.DrawWireSphere(transform.position, attackRange);
     }
 }

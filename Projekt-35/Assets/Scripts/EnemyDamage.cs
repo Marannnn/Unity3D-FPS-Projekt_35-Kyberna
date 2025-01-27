@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class EnemyDamage : MonoBehaviour
 {
@@ -15,7 +16,6 @@ public class EnemyDamage : MonoBehaviour
 
     private void Start()
     {
-
         playerTransform = GameObject.FindGameObjectWithTag("Player")?.transform;
 
         if (playerTransform == null)
@@ -36,42 +36,26 @@ public class EnemyDamage : MonoBehaviour
         if (playerTransform == null)
             return;
 
-
         float distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
-
-        Debug.Log($"Distance to player: {distanceToPlayer}");
-
 
         if (distanceToPlayer <= attackRange)
         {
-            Debug.Log("Player is in range.");
             if (Time.time - lastAttackTime >= attackCooldown)
             {
-                Debug.Log("Cooldown met. Attacking player...");
                 DealDamageToPlayer();
                 lastAttackTime = Time.time;
             }
-            else
-            {
-                Debug.Log($"Cooldown in effect. Next attack in: {attackCooldown - (Time.time - lastAttackTime)} seconds.");
-            }
-        }
-        else
-        {
-            Debug.Log("Player is out of range.");
         }
     }
 
     private void DealDamageToPlayer()
     {
         playerHealth -= damageAmount;
-        Debug.Log($"Player takes {damageAmount} damage. Remaining health: {playerHealth}");
 
         UpdateHealthDisplay();
 
         if (playerHealth <= 0)
         {
-            Debug.Log("Player has died!");
             PlayerDies();
         }
     }
@@ -86,14 +70,7 @@ public class EnemyDamage : MonoBehaviour
 
     private void PlayerDies()
     {
-        Debug.Log("Player death triggered.");
-
-    }
-
-    private void OnDrawGizmos()
-    {
-
-        //Gizmos.color = Color.red;
-        //Gizmos.DrawWireSphere(transform.position, attackRange);
+        Debug.Log("Player death triggered. Restarting game...");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

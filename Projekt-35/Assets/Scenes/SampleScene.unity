@@ -5238,15 +5238,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 179358105}
-  speed: 6
-  gravity: -9.81
-  sprintSpeed: 13
-  jumpHeight: 10
+  walkSpeed: 6
+  sprintSpeed: 10
+  gravity: -25
+  jumpHeight: 1.6
   groundCheck: {fileID: 945281523}
   groundDistance: 0.4
   groundMask:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 64
 --- !u!136 &179358107
 CapsuleCollider:
   m_ObjectHideFlags: 0

@@ -6,50 +6,42 @@ public class PlayerMovement : MonoBehaviour
 {
     public CharacterController controller;
 
-    public float speed = 6f;
-    public float gravity = -9.81f;
+    public float walkSpeed = 6f;
     public float sprintSpeed = 13f;
-    public float jumpHeight = 10f;
+    public float gravity = -9.81f;
+    public float jumpHeight = 1.5f; 
 
-    Vector3 velocity;
+    private Vector3 velocity;
+    private bool isGrounded;
 
     public Transform groundCheck;
-    public float groundDistance = 0.4f;
+    public float groundDistance = 0.3f;
     public LayerMask groundMask;
-
-    bool isGrounded;
 
     void Update()
     {
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+
+        if (isGrounded && velocity.y < 0)
+        {
+            velocity.y = -2f; 
+        }
 
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
 
         Vector3 move = transform.right * x + transform.forward * z;
 
-
-        velocity.y += gravity * Time.deltaTime;
-        controller.Move(velocity * Time.deltaTime);
-
-        if (isGrounded && velocity.y < 0)
-        {
-            velocity.y = -2f;
-
-        }
+        float currentSpeed = Input.GetKey(KeyCode.LeftShift) ? sprintSpeed : walkSpeed;
+        controller.Move(move * currentSpeed * Time.deltaTime);
 
         if (isGrounded && Input.GetKeyDown(KeyCode.Space))
         {
-            velocity.y += jumpHeight;
+            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
         }
 
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            controller.Move(move * sprintSpeed * Time.deltaTime);
-        }
-        else
-        {
-            controller.Move(move * speed * Time.deltaTime);
-        }
+        
+        velocity.y += gravity * Time.deltaTime;
+        controller.Move(velocity * Time.deltaTime);
     }
 }

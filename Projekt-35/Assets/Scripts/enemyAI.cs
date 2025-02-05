@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class enemyAI : MonoBehaviour
+public class EnemyAI : MonoBehaviour
 {
     public float detectionRange = 20f;
     public float moveSpeed = 5f;
@@ -8,10 +8,17 @@ public class enemyAI : MonoBehaviour
     public LayerMask playerLayer;
 
     private Transform playerTransform;
+    private Rigidbody rb;
 
     private void Start()
     {
         playerTransform = GameObject.FindWithTag("Player").transform;
+        rb = GetComponent<Rigidbody>(); 
+
+        if (rb == null)
+        {
+            Debug.LogError("No Rigidbody found on enemy!");
+        }
     }
 
     private void Update()
@@ -21,7 +28,6 @@ public class enemyAI : MonoBehaviour
 
     private void DetectAndChasePlayer()
     {
-
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRange, playerLayer);
 
         foreach (var hitCollider in hitColliders)
@@ -29,7 +35,6 @@ public class enemyAI : MonoBehaviour
             if (hitCollider.CompareTag("Player"))
             {
                 Debug.Log("Player detected!");
-
 
                 if (Vector3.Distance(transform.position, playerTransform.position) <= chaseRange)
                 {
@@ -44,21 +49,13 @@ public class enemyAI : MonoBehaviour
     private void ChasePlayer()
     {
         Vector3 direction = (playerTransform.position - transform.position).normalized;
-        transform.position += direction * moveSpeed * Time.deltaTime;
 
+        
+        direction.y = 0;
+
+        rb.velocity = new Vector3(direction.x * moveSpeed, rb.velocity.y, direction.z * moveSpeed);
 
         Quaternion rotation = Quaternion.LookRotation(direction);
         transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * 5f);
-    }
-
-    private void OnDrawGizmos()
-    {
-
-        //Gizmos.color = Color.yellow;
-        //Gizmos.DrawWireSphere(transform.position, detectionRange);
-
-
-       // Gizmos.color = Color.red;
-       // Gizmos.DrawWireSphere(transform.position, chaseRange);
     }
 }

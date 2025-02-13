@@ -34,7 +34,7 @@ public class EnemyAI : MonoBehaviour
         {
             if (hitCollider.CompareTag("Player"))
             {
-                Debug.Log("Player detected!");
+
 
                 if (Vector3.Distance(transform.position, playerTransform.position) <= chaseRange)
                 {

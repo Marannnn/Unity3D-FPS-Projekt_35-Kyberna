@@ -10,6 +10,9 @@ public class EnemyDamage : MonoBehaviour
     public float attackCooldown = 1f;
     public int damageAmount = 10;
     public TMP_Text healthDisplay;
+    public GameObject deathScreenUI; 
+    public Button restartButton; 
+
     private float lastAttackTime = 0f;
     private Transform playerTransform;
     private int playerHealth = 100;
@@ -26,6 +29,20 @@ public class EnemyDamage : MonoBehaviour
         if (healthDisplay == null)
         {
             Debug.LogError("HealthDisplay is not assigned to the script. Assign it via the Inspector.");
+        }
+
+        if (deathScreenUI != null)
+        {
+            deathScreenUI.SetActive(false);
+        }
+
+        if (restartButton != null)
+        {
+            restartButton.onClick.AddListener(RestartGame); 
+        }
+        else
+        {
+            Debug.LogError("Restart Button is not assigned in the Inspector.");
         }
 
         UpdateHealthDisplay();
@@ -51,7 +68,6 @@ public class EnemyDamage : MonoBehaviour
     private void DealDamageToPlayer()
     {
         playerHealth -= damageAmount;
-
         UpdateHealthDisplay();
 
         if (playerHealth <= 0)
@@ -70,7 +86,28 @@ public class EnemyDamage : MonoBehaviour
 
     private void PlayerDies()
     {
-        Debug.Log("Player death triggered. Restarting game...");
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        Debug.Log("Player has died. Showing death screen...");
+
+        if (deathScreenUI != null)
+        {
+            deathScreenUI.SetActive(true);
+        }
+
+        Time.timeScale = 0f;
+
+        
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
+
+    public void RestartGame()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
+        
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+
 }

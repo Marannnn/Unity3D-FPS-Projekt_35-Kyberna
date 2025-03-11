@@ -15,6 +15,12 @@ public class Target : MonoBehaviour
 
     void Die()
     {
+        
+        if (ScoreManager.instance != null)
+        {
+            ScoreManager.instance.AddScore(1);
+        }
+
         Destroy(gameObject);
     }
 }

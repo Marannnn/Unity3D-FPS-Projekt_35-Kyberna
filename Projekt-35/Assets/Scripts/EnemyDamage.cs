@@ -57,13 +57,19 @@ public class EnemyDamage : MonoBehaviour
 
         if (distanceToPlayer <= attackRange)
         {
-            if (Time.time - lastAttackTime >= attackCooldown)
+            // Perform a raycast to check if the player is visible (no walls between them)
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, playerTransform.position - transform.position, out hit, attackRange))
             {
-                DealDamageToPlayer();
-                lastAttackTime = Time.time;
+                if (hit.collider.CompareTag("Player") && Time.time - lastAttackTime >= attackCooldown)
+                {
+                    DealDamageToPlayer();
+                    lastAttackTime = Time.time;
+                }
             }
         }
     }
+
 
     private void DealDamageToPlayer()
     {

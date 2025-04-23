@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -9,6 +11,9 @@ public class PlayerMovement : MonoBehaviour
     public float crouchSpeed = 3f;
     public float gravity = -9.81f;
     public float jumpHeight = 1.5f;
+    
+    private float _defaultWalkSpeed;
+    private float _defaultSprintSpeed;
 
     public Transform groundCheck;
     public float groundDistance = 0.4f;
@@ -18,7 +23,9 @@ public class PlayerMovement : MonoBehaviour
     public float slideDuration = 1f;
     public float crouchHeight = 1f;
     private float originalHeight;
-
+    
+    private Coroutine _speedBoostCoroutine;
+    
     private Vector3 velocity;
     private bool isGrounded;
     private bool isSliding;
@@ -31,6 +38,9 @@ public class PlayerMovement : MonoBehaviour
     {
         charController = GetComponent<CharacterController>();
         originalHeight = charController.height;
+        
+        _defaultWalkSpeed = walkSpeed;
+        _defaultSprintSpeed = sprintSpeed;
     }
 
     void Update()
@@ -117,6 +127,25 @@ public class PlayerMovement : MonoBehaviour
     {
         isCrouching = false;
         charController.height = originalHeight;
+    }
+    
+    public void BoostSpeed(float boostAmount, float boostDuration)
+    {
+        if (_speedBoostCoroutine != null)
+            StopCoroutine(_speedBoostCoroutine);
+        
+        _speedBoostCoroutine = StartCoroutine(SpeedBoostRoutine(boostAmount, boostDuration));
+    }
+    
+    private IEnumerator SpeedBoostRoutine(float boostAmount, float boostDuration)
+    {
+        walkSpeed += boostAmount;
+        sprintSpeed += boostAmount;
+        
+        yield return new WaitForSeconds(boostDuration);
+        
+        walkSpeed = _defaultWalkSpeed;
+        sprintSpeed = _defaultSprintSpeed;
     }
 
     void OnDrawGizmos()
